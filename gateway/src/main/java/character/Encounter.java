@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import cards.Card;
 import cards.Monster;
+import gateway.Entry;
 import cards.CardValue;
 
 public class Encounter {
@@ -23,18 +24,12 @@ public class Encounter {
 		addCard();
 		
 		myCard = encounterCard();
-		try {
-			chooseAdventurePath(myCard);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		chooseAdventurePath(myCard);
 		
 	}
 	
 	private void addCard() {
 		//this should randomly add several cards into encounter list
-		
 		encList.add(Monster.getMonster());
 	}
 	
@@ -52,8 +47,50 @@ public class Encounter {
 		return random.nextInt(bound);
 	}
 	
-	private boolean fight() throws InterruptedException {
-		System.out.println("You stand your ground and fight.\n");
+	private void chooseAdventurePath(Card myChoices) {
+		switch(myChoices.getType()) {
+			case MONSTER:
+				
+				System.out.println("You have encountered creatures lurking in the woods \n"
+						+"you do your best to remain unseen, but they catch your scent. \n"
+						+"(1)Fight or (2)Run");
+				
+				int choice = Integer.parseInt(Entry.scanner.nextLine());
+				
+				//System.out.println(choice);
+				
+				if(choice==1) {
+					while(!fight()) {
+						System.out.println("The battle continues... \n");
+					}
+				}else if(choice==2) {
+					System.out.println("Reason is the better part of valor, the dead can call no man a coward.\n"
+							+"You decide to escape and avoid the confrontation\n");
+					enc = false;
+					player.rest();
+					encList.remove(encCardIndex);
+				}else {
+					System.out.println("You're mind races and you press the wrong key on the keyboard\n"
+							+"your error may cost you your life as the monsters charge.\n");
+					while(!fight()) {
+						System.out.println("The battle continues... \n");
+					}
+				}
+				break;
+			default:
+				break;
+			}
+		myCard = null;
+		encList = null;
+	}
+	
+	public boolean getEnc() {
+		return enc;
+	}
+	
+	private boolean fight() {
+		System.out.println("You stand your ground and fight.\n You have "+player.getHealth()+" health remaining.\n");
+		
 		boolean complete = false;
 		if(monsters<1) {
 			List<CardValue> myVals = myCard.getValues(); 
@@ -81,60 +118,14 @@ public class Encounter {
 			//monsters number reduced then recompared
 			if(monsters>player.getSurvival()) {
 				if(!player.getSurvived()) {
-					if(!player.bandage()) {
 						System.out.println("You are dead... probably of dysentary... but it could be monsters\n");
 						complete = true;
-					}
 				}else {
 					System.out.println("You've been biten, you have "+player.getHealth()+" remaining\n");
 				}
 			}
 		}
-		Thread.sleep(100);
 		return complete;
-	}
-	
-	private void chooseAdventurePath(Card myChoices) throws InterruptedException {
-		Scanner scanner = new Scanner(System.in);
-		switch(myChoices.getType()) {
-			case MONSTER:
-				
-				System.out.println("You have encountered creatures lurking in the woods \n"
-						+"you do your best to remain unseen, but they catch your scent. \n"
-						+"(1)Fight or (2)Run");
-				
-				int choice = Integer.parseInt(scanner.nextLine());
-				
-				System.out.println(choice);
-				
-				if(choice==1) {
-					while(!fight()) {
-						System.out.println("The battle continues... \n");
-					}
-				}else if(choice==2) {
-					System.out.println("Reason is the better part of valor, the dead can call no man a coward.\n"
-							+"You decide to escape and avoid the confrontation\n");
-					enc = false;
-					player.rest();
-					encList.remove(encCardIndex);
-				}else {
-					System.out.println("You're mind races and you press the wrong key on the keyboard\n"
-							+"your error may cost you your life as the monsters charge.\n");
-					while(!fight()) {
-						System.out.println("The battle continues... \n");
-					}
-				}
-				
-				break;
-			default:
-				break;
-			}
-
-	}
-	
-	public boolean getEnc() {
-		return enc;
-	}
-	
+	}	
 	
 }

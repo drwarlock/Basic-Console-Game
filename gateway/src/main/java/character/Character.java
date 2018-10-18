@@ -21,6 +21,8 @@ public class Character {
 	}
 	
 	private void getStartHand() {
+		//this needs to be adjusted to random cards.
+		
 		myHand[0] = Weapon.randomWeapon();
 		myHand[1] = Armor.randomArmor();
 		myHand[2] = Equipment.randomEquipment();
@@ -48,6 +50,8 @@ public class Character {
 		boolean alive = false;
 		if(myHealth > 0) {
 			alive = true;
+		}else {
+			alive = bandage();
 		}
 		return alive;
 	}
@@ -100,10 +104,10 @@ public class Character {
 					if(myVals.get(n).getName()=="Health") {
 						myHealth+=myVals.get(n).getValue();
 						myHand[i] = Empty.getEmpty();
+						return true;
 					}
 				}
 			}
-			return true;
 		}
 		return false;
 	}
