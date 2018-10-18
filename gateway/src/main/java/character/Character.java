@@ -5,12 +5,14 @@ import java.util.List;
 import cards.Armor;
 import cards.Card;
 import cards.CardValue;
+import cards.Empty;
+import cards.Equipment;
 import cards.Weapon;
 
 public class Character {
 	private int myHealth;
 	private String myName;
-	private Card[] myHand = new Card[2];
+	private Card[] myHand = new Card[3];
 	
 	public Character(String name) {
 		myName = name;
@@ -21,6 +23,7 @@ public class Character {
 	private void getStartHand() {
 		myHand[0] = Weapon.randomWeapon();
 		myHand[1] = Armor.randomArmor();
+		myHand[2] = Equipment.randomEquipment();
 	}
 	
 	private void setHealth() {
@@ -81,6 +84,28 @@ public class Character {
 			}
 		}
 		return damage;
+	}
+	
+	public void rest() {
+		if(myHealth<2) {
+			myHealth++;
+		}
+	}
+	
+	public boolean bandage() {
+		if(myHealth<1) {
+			for(int i = 0; i < myHand.length; i++) {
+				List<CardValue> myVals = myHand[i].getValues(); 
+				for(int n = 0; n < myVals.size();n++) {
+					if(myVals.get(n).getName()=="Health") {
+						myHealth+=myVals.get(n).getValue();
+						myHand[i] = Empty.getEmpty();
+					}
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 	
 }

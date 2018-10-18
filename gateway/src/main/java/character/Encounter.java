@@ -10,6 +10,7 @@ import cards.Monster;
 import cards.CardValue;
 
 public class Encounter {
+	private boolean enc = true;
 	private int encCardIndex;
 	private int monsters;
 	private Card myCard;
@@ -29,16 +30,10 @@ public class Encounter {
 			e.printStackTrace();
 		}
 		
-		
-		
-		
-		
-		
 	}
 	
 	private void addCard() {
 		//this should randomly add several cards into encounter list
-		
 		
 		encList.add(Monster.getMonster());
 	}
@@ -58,6 +53,7 @@ public class Encounter {
 	}
 	
 	private boolean fight() throws InterruptedException {
+		System.out.println("You stand your ground and fight.\n");
 		boolean complete = false;
 		if(monsters<1) {
 			List<CardValue> myVals = myCard.getValues(); 
@@ -66,10 +62,12 @@ public class Encounter {
 					monsters+=myVals.get(n).getValue();
 				}
 			}
+			System.out.println("There are "+monsters+" creatures. \n");
+		}else {
+			System.out.println("There are "+monsters+" creatures. \n");
 		}
-		System.out.println("Total number of monsters "+monsters+"\n");
 		
-		if(player.getDamage()>monsters) {
+		if(player.getDamage()>=monsters) {
 			
 			encList.remove(encCardIndex);
 			//monsters dead, remove card from encounter
@@ -83,8 +81,10 @@ public class Encounter {
 			//monsters number reduced then recompared
 			if(monsters>player.getSurvival()) {
 				if(!player.getSurvived()) {
-					System.out.println("You are dead... probably of dysentary... but it could be monsters\n");
-					complete = true;
+					if(!player.bandage()) {
+						System.out.println("You are dead... probably of dysentary... but it could be monsters\n");
+						complete = true;
+					}
 				}else {
 					System.out.println("You've been biten, you have "+player.getHealth()+" remaining\n");
 				}
@@ -111,15 +111,30 @@ public class Encounter {
 					while(!fight()) {
 						System.out.println("The battle continues... \n");
 					}
+				}else if(choice==2) {
+					System.out.println("Reason is the better part of valor, the dead can call no man a coward.\n"
+							+"You decide to escape and avoid the confrontation\n");
+					enc = false;
+					player.rest();
+					encList.remove(encCardIndex);
+				}else {
+					System.out.println("You're mind races and you press the wrong key on the keyboard\n"
+							+"your error may cost you your life as the monsters charge.\n");
+					while(!fight()) {
+						System.out.println("The battle continues... \n");
+					}
 				}
 				
 				break;
 			default:
 				break;
 			}
-	
+
 	}
-		
+	
+	public boolean getEnc() {
+		return enc;
+	}
 	
 	
 }

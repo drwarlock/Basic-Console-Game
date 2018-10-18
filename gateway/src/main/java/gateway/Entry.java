@@ -14,12 +14,12 @@ public class Entry {
 
 		System.out.println("To interact with the prompts simply answer the question, \n"
 				+"if a prompt includes (x) simply type the number x.\n"
-				+"What is your name? \n");
+				+"What is your name? \n\n");
 		
 		String charName = scanner.nextLine();
-		
 		Character myChar = new Character(charName);
 		
+
 		System.out.println("Welcome "+myChar.getName()+", adventure awaits... \n"
 				+"The end came quick for most, but not you. You've managed to create makeshift camp \n"
 				+"and get a moments respite. After a short rest you begin to hear the skitteing of the \n"
@@ -29,7 +29,6 @@ public class Entry {
 			Encounter myenc = new Encounter(myChar);
 		}
 		scanner.close();
-		
 	}
 
 }

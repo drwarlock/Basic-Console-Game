@@ -20,7 +20,7 @@ public class Monster implements Card{
 	
 	private void setValues() {
 		Random random = new Random();
-		mValues.add(new CardValue("ttl",random.nextInt(10)));
+		mValues.add(new CardValue("ttl",random.nextInt(8)+2));
 	}
 	
 	public String getName() {
