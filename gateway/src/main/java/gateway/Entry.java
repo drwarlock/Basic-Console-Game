@@ -1,8 +1,9 @@
 package gateway;
 
 import java.util.Scanner;
+
+import cards.Encounter;
 import character.Character;
-import character.Encounter;
 
 public class Entry {
 	public static final Scanner scanner = new Scanner(System.in);

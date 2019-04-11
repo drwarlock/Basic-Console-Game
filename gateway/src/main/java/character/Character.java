@@ -1,5 +1,6 @@
 package character;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cards.Armor;
@@ -10,6 +11,7 @@ import cards.Equipment;
 import cards.Weapon;
 
 public class Character {
+	private ArrayList<Character_Ability> stats = new ArrayList<Character_Ability>(); 
 	private int myHealth;
 	private String myName;
 	private Card[] myHand = new Card[3];
